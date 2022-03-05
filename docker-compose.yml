@@ -1,0 +1,27 @@
+version: '3'
+services:
+  app:
+    build:
+      context: ./
+    ports:
+      - "${PORT}:8888"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    volumes:
+      - type: bind
+        source: "${DATA_DIR}"
+        target: /data
+      - type: bind
+        source: "${NOTEBOOKS_DIR}"
+        target: /notebooks
+      - type: bind
+        source: ./jupyter_notebook_config.json
+        target: /root/.jupyter/jupyter_notebook_config.json
+      - type: bind
+        source: ./jupyter_notebook_config.py
+        target: /root/.jupyter/jupyter_notebook_config.py
